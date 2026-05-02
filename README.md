@@ -81,14 +81,23 @@ fi
 ```
 
 SOURCE="/home/andrey/" - путь
+
 TARGET="/tmp/backup" - переменная + путь до папки копирования
+
 LOGGER_TAG="backup_home" - метка для системного лога
+
 mkdir -p "$TARGET" - Создаёт целевую папку, если её не существует. (хотя для первого задания она уже есть).
+
 logger -t "$LOGGER_TAG" "Starting backup of $SOURCE to $TARGET" - инфа для системного лога, о начале операции
+
 rsync -avc --delete --exclude='.*/' "$SOURCE" "$TARGET" 2>&1 | logger -t "$LOGGER_TAG" - Выполняет само резервное копирование с заданными требованиями (зеркальность, хеши, исключение скрытых папок)
+
 if [ ${PIPESTATUS[0]} -eq 0 ]; then - для проверки (код возврата)
+
 logger ... "Backup completed successfully" - если всё ок, то запишет инфо в лог
+
 logger ... "Backup completed with an error" - если всё плохо, то запишет инфо в лог 
+
 exit 1 - конец скрипта.
 
 ![Резервное копирование 2](screenshots/Резервное%20копирование%202.PNG)
